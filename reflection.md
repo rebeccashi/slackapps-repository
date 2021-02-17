@@ -13,3 +13,4 @@
 ## App ideas
 1. Says hi to new users joining #general channel.
 2. Remind users about daily standup.
+3. Give info for an git repo when the user asks (active PR's, issues, branches)
