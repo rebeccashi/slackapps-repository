@@ -16,7 +16,18 @@ const app = new App({
 const introductionsChannelId = "C01M4TFHZ3R"
 
 app.message('hello', async ({ message, say }) => {
-  await say('hi')
+  await say({
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "plain_text",
+          "text": "This is a plain text section block.",
+          "emoji": true
+        }
+      }
+    ]
+  });
 });
 
 app.event('team_join', async ({ event, client }) => {
