@@ -18,3 +18,16 @@ const introductionsChannelId = "C01M4TFHZ3R"
 app.message('hello', async ({ message, say }) => {
   await say('hi')
 });
+
+app.event('team_join', async ({ event, client }) => {
+  try {
+    const result = await client.chat.postMessage({
+      // token: process.env.SLACK_BOT_TOKEN,
+      channel: introductionsChannelId,
+      text: `Welcome to the workspace, <@${event.user.id}>!`
+    });
+  }
+  catch (error) {
+    console.error(error);
+  }
+});
