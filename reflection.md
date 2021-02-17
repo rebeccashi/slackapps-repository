@@ -9,7 +9,3 @@
 1. I don't understand the purposes of App Home.
 2. I have never used a protocol like OAuth before. How would I update the permission scope if the app requires new permissions? 
 3. How do I host my app? Through ngrok?
-
-## App ideas
-1. Says hi to new users joining #general channel.
-2. Remind users about daily standup.
