@@ -55,3 +55,60 @@ app.event('team_join', async ({ event, client }) => {
     console.error(error);
   }
 });
+
+app.command('/ticket', async ({ ack, body, client }) => {
+  // Acknowledge the command request
+  await ack();
+
+  try {
+    // Call views.open with the built-in client
+    const result = await client.views.open({
+      trigger_id: body.trigger_id,
+      view: {
+        type: 'modal',
+        callback_id: 'view1',
+        title: {
+          type: 'plain_text',
+          text: 'Modal title',
+        },
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: 'Welcome to a modal with _blocks_'
+            },
+            accessory: {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'Click me!'
+              },
+              action_id: 'button_abc'
+            }
+          },
+          {
+            type: 'input',
+            block_id: 'input_c',
+            label: {
+              type: 'plain_text',
+              text: 'What are your hopes and dreams?'
+            },
+            element: {
+              type: 'plain_text_input',
+              action_id: 'dreamy_input',
+              multiline: true
+            }
+          }
+        ],
+        submit: {
+          type: 'plain_text',
+          text: 'Submit'
+      }
+      }
+    });
+  }
+   catch (error) {
+    console.error(error);
+  }
+})
