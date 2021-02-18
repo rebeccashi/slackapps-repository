@@ -19,16 +19,29 @@ app.message('hello', async ({ message, say }) => {
   await say({
     "blocks": [
       {
-        "type": "section",
-        "text": {
-          "type": "plain_text",
-          "text": "This is a plain text section block.",
-          "emoji": true
-        }
+        "type": "actions",
+        "block_id": "action_block",
+        "elements": [
+          {
+            "type": "button",
+            "text": {
+              "type": "plain_text",
+              "text": "Click Me"
+            },
+            "value": "click_me_123",
+            "action_id": "click_me_button"
+          }
+        ]
       }
     ]
   });
 });
+
+app.action('click_me_button', async ({ body, ack, say }) => {
+  await ack();
+  // Update the message to reflect the action
+  await say(`<@${body.user.id}> clicked a button!`)
+})
 
 app.event('team_join', async ({ event, client }) => {
   try {
