@@ -113,3 +113,6 @@ dist
 .vscode-test
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+# google cloud
+translator/Slack Translator-27162abe0251.json

@@ -1,5 +1,7 @@
 const { App } = require('@slack/bolt');
 require('dotenv').config();
+const { v2: { Translate } } = require('@google-cloud/translate');
+const translator = new Translate();
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
