@@ -23,9 +23,10 @@ app.event('reaction_added', async( {event, client} ) => {
 
     const { item: {channel, ts}, reaction } = event;
 
-    const language = getLanguageFromReaction(reaction);
+    const languageObj = getLanguageFromReaction(reaction);
 
-    if (!language) return;
+    if (!languageObj) return;
+    const {countryCode, language} = languageObj
 
     //get the message with the ts from channel history
     const historyResult = await client.conversations.history({
@@ -37,9 +38,10 @@ app.event('reaction_added', async( {event, client} ) => {
     })
     if (historyResult.messages.length <= 0) return;
     const {text: textToTranslate } = historyResult.messages[0];
-    console.log(textToTranslate)
+    // console.log(textToTranslate)
 
-    const translatedText = await translate(textToTranslate, language);
+    // const translatedText = "placeholder"
+    const [translatedText, ...y] = await translateText(textToTranslate, countryCode);
 
     try {
         const result = await client.chat.postMessage({
@@ -53,23 +55,31 @@ app.event('reaction_added', async( {event, client} ) => {
     }
 })
 
+async function translateText(text, target) {
+    try {
+        return await translator.translate(text, target);
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
 function getLanguageFromReaction(reaction) {
-    let language;
+    let languageObj = null;
     const reactionToLanguageMap = {
-        fr: {code: 'fr', name: 'French'},
-        mx: {code: 'es', name: 'Spanish'},
-        jp: {code: 'ja', name: 'Japanese'},
-        ru: {code: 'ru', name:'Russian'},
+        fr: {countryCode: 'fr', language: 'French'},
+        mx: {countryCode: 'es', language: 'Spanish'},
+        jp: {countryCode: 'ja', language: 'Japanese'},
+        ru: {countryCodecode: 'ru', language:'Russian'},
     }
 
     // const [prefix, emojiCode] = reaction.includes('flag-') ? reaction.split('-') : reaction
     if (reaction.includes('flag-')) {
-        const [prefix, emojiCode] = reaction.split('-')
-        language = reactionToLanguageMap[emojiCode]
+        const [prefix, countryCode] = reaction.split('-')
+        languageObj = reactionToLanguageMap[countryCode]
     } else {
-        language = reactionToLanguageMap[reaction]
+        languageObj = reactionToLanguageMap[reaction]
     }
-
-    console.log(reaction)
-    return language;
+    // console.log(reaction)
+    // console.log(languageObj)
+    return languageObj;
 }
